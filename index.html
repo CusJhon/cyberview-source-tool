@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>⚡ CYBER EXTRACTOR ⚡</title>
+  
+  <!-- ========== ANTI-THIEVING META TAGS ========== -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="bingbot" content="noindex, nofollow, noarchive">
+  <meta name="slurp" content="noindex, nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, private">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="no-referrer">
+  
+  <!-- Fonts & Syntax Highlighter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+  
+  <!-- JSZip Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
+  <!-- Highlight.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== MATRIX RAIN BACKGROUND CANVAS ========== -->
+  <canvas id="matrixCanvas"></canvas>
+  
+  <!-- ========== CRT SCANLINE OVERLAY EFFECT ========== -->
+  <div class="crt-overlay"></div>
+  
+  <!-- ========== SECURITY WATERMARK (INVISIBLE TRACKING) ========== -->
+  <div class="security-watermark" id="securityWatermark"></div>
+  
+  <!-- ========== PROTECTED BADGE ========== -->
+  <div class="protected-badge">🔒 SECURED BY CYBER-SHIELD v2.0 🔒</div>
+
+  <!-- ========== MAIN TERMINAL CONTAINER ========== -->
+  <div class="terminal-container">
+    
+    <!-- ========== HEADER SECTION WITH GLITCH EFFECT ========== -->
+    <div class="cyber-header">
+      <h1 class="glitch" data-text=">_ CYBER_EXTRACTOR // ROOT">>_ CYBER_EXTRACTOR // ROOT</h1>
+      <div class="status-bar">
+        <span class="led"></span>
+        <span class="status-text" id="connectionStatus">CONNECTION: STANDBY</span>
+        <span class="cursor-blink">█</span>
+      </div>
+    </div>
+
+    <!-- ========== TAB NAVIGATION SYSTEM ========== -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="extractor">📡 HTML EXTRACTOR</button>
+      <button class="tab-btn" data-tab="downloader">📦 DOWNLOAD WEBSITE</button>
+    </div>
+
+    <!-- ========== PANEL 1: HTML EXTRACTOR ========== -->
+    <div class="panel active" id="panel-extractor">
+      
+      <!-- URL Input Section -->
+      <div class="input-group">
+        <span class="prompt">$></span>
+        <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com" spellcheck="false" autocomplete="off">
+        <button id="fetchBtn" class="cyber-btn">EXECUTE</button>
+      </div>
+      
+      <!-- Hacker Terminal Log -->
+      <div class="hacker-log" id="hackerLog">
+        <div class="log-line"><span class="timestamp">[00:00]</span> > System initialized...</div>
+        <div class="log-line"><span class="timestamp">[00:00]</span> > Security protocols active...</div>
+        <div class="log-line"><span class="timestamp">[00:00]</span> > Awaiting command...</div>
+      </div>
+
+      <!-- Split View: Code Editor + Live Preview -->
+      <div class="split-container">
+        
+        <!-- Left Panel: Code Viewer -->
+        <div class="split-left">
+          <div class="code-header">
+            <span class="code-lang">📄 HTML_SOURCE</span>
+            <div class="code-actions">
+              <button id="copyBtn" class="mini-btn" title="Copy to Clipboard">📋 COPY</button>
+              <button id="downloadHtmlBtn" class="mini-btn" title="Download HTML">⬇ HTML</button>
+              <button id="beautifyBtn" class="mini-btn" title="Beautify Code">✨ BEAUTIFY</button>
+              <button id="minifyBtn" class="mini-btn" title="Minify Code">⚡ MINIFY</button>
+            </div>
+          </div>
+          <div class="code-container">
+            <pre><code id="htmlCodeViewer" class="language-html">// HTML source will appear here...</code></pre>
+          </div>
+        </div>
+        
+        <!-- Right Panel: Live Preview -->
+        <div class="split-right">
+          <div class="preview-header">
+            <span class="preview-title">🌐 LIVE PREVIEW</span>
+            <span class="preview-url" id="previewUrlDisplay"></span>
+          </div>
+          <iframe id="livePreview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" title="live preview"></iframe>
+        </div>
+      </div>
+      
+      <!-- Resize Handle Hint -->
+      <div class="drag-hint">◀───[ DRAG TO RESIZE ]───▶</div>
+    </div>
+
+    <!-- ========== PANEL 2: DOWNLOAD WEBSITE CODE (ZIP) ========== -->
+    <div class="panel" id="panel-downloader">
+      
+      <!-- URL Input for Downloader -->
+      <div class="input-group">
+        <span class="prompt">$></span>
+        <input type="text" id="dlUrlInput" placeholder="https://example.com" value="https://example.com" spellcheck="false">
+        <button id="downloadSiteBtn" class="cyber-btn">EXTRACT & ZIP</button>
+      </div>
+      
+      <!-- Downloader Hacker Log -->
+      <div class="hacker-log" id="dlHackerLog">
+        <div class="log-line"><span class="timestamp">[00:00]</span> > Ready for extraction...</div>
+        <div class="log-line"><span class="timestamp">[00:00]</span> > Awaiting target URL...</div>
+      </div>
+      
+      <!-- Download Progress Area -->
+      <div class="dl-status-area">
+        <div class="progress-indicator">
+          <div class="progress-bar" id="dlProgress"></div>
+        </div>
+        <div id="dlMessage" class="dl-message">⚡ Awaiting target URL ⚡</div>
+        <div class="asset-list" id="assetList"></div>
+      </div>
+    </div>
+
+    <!-- ========== TERMINAL FOOTER ========== -->
+    <div class="terminal-footer">
+      <span class="footer-left">[ 0x7F ] ROOT@CYBER-EXTRACTOR:~</span>
+      <span class="footer-right" id="timeDisplay">00:00:00</span>
+    </div>
+  </div>
+
+  <!-- ========== MAIN JAVASCRIPT ========== -->
+  <script src="script.js"></script>
+</body>
+</html>
