@@ -64,6 +64,29 @@ textarea {
   -ms-user-select: text !important;
 }
 
+/* ===== INFO TIP ===== */
+.info-tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin-bottom: 12px;
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid var(--neon-blue);
+  border-radius: 8px;
+  font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+}
+
+.info-icon {
+  color: var(--neon-blue);
+  font-size: 1.2em;
+}
+
+.info-text {
+  color: var(--neon-green);
+  opacity: 0.9;
+}
+
 /* ===== MATRIX CANVAS BACKGROUND ===== */
 #matrixCanvas {
   position: fixed;

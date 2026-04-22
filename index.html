@@ -74,6 +74,12 @@
     <!-- ========== PANEL 1: HTML EXTRACTOR ========== -->
     <div class="panel active" id="panel-extractor">
       
+      <!-- Info text untuk user -->
+      <div class="info-tip">
+        <span class="info-icon">ℹ️</span>
+        <span class="info-text">Try: example.com | httpbin.org/html | google.com</span>
+      </div>
+      
       <!-- URL Input Section -->
       <div class="input-group">
         <span class="prompt">$></span>
@@ -105,7 +111,12 @@
           </div>
           <div class="code-container">
             <pre><code id="htmlCodeViewer" class="language-html">// Enter a URL above and click EXECUTE
-// HTML source will appear here...</code></pre>
+// HTML source will appear here...
+//
+// TIPS:
+// - Try: example.com
+// - Try: httpbin.org/html
+// - Try: google.com</code></pre>
           </div>
         </div>
         
@@ -120,11 +131,17 @@
       </div>
       
       <!-- Resize Handle Hint -->
-      <div class="drag-hint">◀───[ DRAG TO RESIZE ]───▶</div>
+      <div class="drag-hint">◀──[ CORS PROXY: MULTI-FALLBACK ]──▶</div>
     </div>
 
     <!-- ========== PANEL 2: DOWNLOAD WEBSITE CODE (ZIP) ========== -->
     <div class="panel" id="panel-downloader">
+      
+      <!-- Info text -->
+      <div class="info-tip">
+        <span class="info-icon">ℹ️</span>
+        <span class="info-text">Try: example.com | httpbin.org | github.com</span>
+      </div>
       
       <!-- URL Input for Downloader -->
       <div class="input-group">
