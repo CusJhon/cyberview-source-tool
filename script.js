@@ -1,7 +1,8 @@
 /* ============================================
    SCRIPT.JS - CYBER EXTRACTOR ULTRA
    WITH ANTI-THIEVING SECURITY SYSTEM
-   PLACEHOLDER FIXED - NO DEFAULT URL
+   + RESET FUNCTIONALITY
+   + ENABLED COPY/PASTE IN INPUTS
    ============================================ */
 
 (function(){
@@ -51,6 +52,10 @@
     // Disable right-click context menu
     disableRightClick: function() {
       document.addEventListener('contextmenu', (e) => {
+        // Allow right-click on inputs
+        if(e.target.matches('input, textarea')) {
+          return true;
+        }
         e.preventDefault();
         this.triggerAlarm('RIGHT-CLICK BLOCKED', 'warning');
         return false;
@@ -60,6 +65,13 @@
     // Disable keyboard shortcuts
     disableKeyboardShortcuts: function() {
       document.addEventListener('keydown', (e) => {
+        // Allow copy/paste shortcuts in inputs
+        if(e.target.matches('input, textarea')) {
+          if((e.ctrlKey || e.metaKey) && ['c', 'v', 'x', 'a', 'z', 'y'].includes(e.key.toLowerCase())) {
+            return true;
+          }
+        }
+        
         const blockedCombos = [
           // Save (Ctrl+S / Cmd+S)
           (e.ctrlKey || e.metaKey) && e.key === 's',
@@ -172,7 +184,7 @@
       document.addEventListener('selectionchange', () => {
         const selection = window.getSelection();
         if(selection && selection.toString().length > 0) {
-          const container = selection.anchorNode?.parentElement?.closest('.code-container');
+          const container = selection.anchorNode?.parentElement?.closest('.code-container, input, textarea');
           if(!container) {
             selection.removeAllRanges();
             this.triggerAlarm('TEXT SELECTION BLOCKED', 'warning');
@@ -180,18 +192,18 @@
         }
       });
       
-      // Block copy event outside code viewer
+      // Block copy event outside code viewer AND inputs
       document.addEventListener('copy', (e) => {
-        const container = e.target.closest('.code-container');
+        const container = e.target.closest('.code-container, input, textarea');
         if(!container) {
           e.preventDefault();
           this.triggerAlarm('COPY ATTEMPT BLOCKED', 'warning');
         }
       });
       
-      // Block cut event
+      // Block cut event outside inputs and code viewer
       document.addEventListener('cut', (e) => {
-        const container = e.target.closest('.code-container');
+        const container = e.target.closest('.code-container, input, textarea');
         if(!container) {
           e.preventDefault();
           this.triggerAlarm('CUT ATTEMPT BLOCKED', 'warning');
@@ -359,6 +371,7 @@
   const dlHackerLog = document.getElementById('dlHackerLog');
   const urlInput = document.getElementById('urlInput');
   const fetchBtn = document.getElementById('fetchBtn');
+  const resetExtractorBtn = document.getElementById('resetExtractorBtn');
   const codeViewer = document.getElementById('htmlCodeViewer');
   const livePreview = document.getElementById('livePreview');
   const previewUrlDisplay = document.getElementById('previewUrlDisplay');
@@ -369,12 +382,31 @@
   
   const dlUrlInput = document.getElementById('dlUrlInput');
   const downloadSiteBtn = document.getElementById('downloadSiteBtn');
+  const resetDownloaderBtn = document.getElementById('resetDownloaderBtn');
   const dlProgress = document.getElementById('dlProgress');
   const dlMessage = document.getElementById('dlMessage');
   const assetList = document.getElementById('assetList');
   
   // CORS Proxy
   const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+  
+  // ==========================================
+  // DEFAULT MESSAGES FOR RESET
+  // ==========================================
+  
+  const DEFAULT_EXTRACTOR_CODE = `// Enter a URL above and click EXECUTE
+// HTML source will appear here...`;
+  
+  const DEFAULT_EXTRACTOR_LOGS = [
+    'System initialized...',
+    'Security protocols active...',
+    'Enter URL and press EXECUTE...'
+  ];
+  
+  const DEFAULT_DOWNLOADER_LOGS = [
+    'Ready for extraction...',
+    'Enter URL and press EXTRACT...'
+  ];
   
   // ==========================================
   // TAB SYSTEM
@@ -425,6 +457,17 @@
     line.innerHTML = `<span class="timestamp">${time}</span> > ${message}`;
     container.appendChild(line);
     container.scrollTop = container.scrollHeight;
+  }
+  
+  function clearLog(container) {
+    container.innerHTML = '';
+  }
+  
+  function resetLogWithDefaults(container, defaultMessages) {
+    clearLog(container);
+    defaultMessages.forEach(msg => {
+      addLog(container, msg);
+    });
   }
 
   // ==========================================
@@ -488,10 +531,11 @@
     // Add https:// if no protocol specified
     if(!url.match(/^https?:\/\//i)) {
       url = 'https://' + url;
+      urlInput.value = url;
     }
     
     statusText.innerText = 'CONNECTION: FETCHING...';
-    hackerLog.innerHTML = '';
+    clearLog(hackerLog);
     fakeHackerSequence(hackerLog);
     playBeep('click');
     
@@ -530,6 +574,56 @@
   }
 
   // ==========================================
+  // RESET FUNCTION FOR EXTRACTOR
+  // ==========================================
+  
+  function resetExtractor() {
+    // Clear input
+    urlInput.value = '';
+    
+    // Reset status
+    statusText.innerText = 'CONNECTION: STANDBY';
+    
+    // Reset logs
+    resetLogWithDefaults(hackerLog, DEFAULT_EXTRACTOR_LOGS);
+    
+    // Reset code viewer
+    codeViewer.textContent = DEFAULT_EXTRACTOR_CODE;
+    hljs.highlightElement(codeViewer);
+    
+    // Reset preview
+    livePreview.src = 'about:blank';
+    previewUrlDisplay.innerText = 'No URL loaded';
+    
+    addLog(hackerLog, '🔄 Reset to initial state');
+    playBeep('click');
+  }
+
+  // ==========================================
+  // RESET FUNCTION FOR DOWNLOADER
+  // ==========================================
+  
+  function resetDownloader() {
+    // Clear input
+    dlUrlInput.value = '';
+    
+    // Reset logs
+    resetLogWithDefaults(dlHackerLog, DEFAULT_DOWNLOADER_LOGS);
+    
+    // Reset progress
+    dlProgress.style.width = '0%';
+    
+    // Reset message
+    dlMessage.innerText = '⚡ Awaiting target URL ⚡';
+    
+    // Clear asset list
+    assetList.innerHTML = '';
+    
+    addLog(dlHackerLog, '🔄 Reset to initial state');
+    playBeep('click');
+  }
+
+  // ==========================================
   // BUTTON EVENT LISTENERS
   // ==========================================
   
@@ -538,10 +632,12 @@
     fetchAndDisplay(url);
   });
   
+  resetExtractorBtn.addEventListener('click', resetExtractor);
+  
   // Copy button
   copyBtn.addEventListener('click', async () => {
     const content = codeViewer.textContent;
-    if(!content || content.includes('Enter a URL above')) {
+    if(!content || content === DEFAULT_EXTRACTOR_CODE) {
       addLog(hackerLog, '⚠️ No HTML content to copy');
       return;
     }
@@ -558,7 +654,7 @@
   // Download HTML button
   downloadHtmlBtn.addEventListener('click', () => {
     const content = codeViewer.textContent;
-    if(!content || content.includes('Enter a URL above')) {
+    if(!content || content === DEFAULT_EXTRACTOR_CODE) {
       addLog(hackerLog, '⚠️ No HTML content to download');
       return;
     }
@@ -577,7 +673,7 @@
   // Beautify button
   beautifyBtn.addEventListener('click', () => {
     const content = codeViewer.textContent;
-    if(!content || content.includes('Enter a URL above')) {
+    if(!content || content === DEFAULT_EXTRACTOR_CODE) {
       addLog(hackerLog, '⚠️ No HTML content to beautify');
       return;
     }
@@ -596,7 +692,7 @@
   // Minify button
   minifyBtn.addEventListener('click', () => {
     const content = codeViewer.textContent;
-    if(!content || content.includes('Enter a URL above')) {
+    if(!content || content === DEFAULT_EXTRACTOR_CODE) {
       addLog(hackerLog, '⚠️ No HTML content to minify');
       return;
     }
@@ -655,9 +751,10 @@
     // Add https:// if no protocol specified
     if(!baseUrl.match(/^https?:\/\//i)) {
       baseUrl = 'https://' + baseUrl;
+      dlUrlInput.value = baseUrl;
     }
     
-    dlHackerLog.innerHTML = '';
+    clearLog(dlHackerLog);
     fakeHackerSequence(dlHackerLog);
     assetList.innerHTML = '';
     dlMessage.innerText = '⚡ Scanning assets...';
@@ -741,6 +838,8 @@
       addLog(dlHackerLog, `❌ ERROR: ${err.message}`);
     }
   });
+  
+  resetDownloaderBtn.addEventListener('click', resetDownloader);
 
   // ==========================================
   // KEYBOARD SHORTCUT FOR EXECUTE (Ctrl+Enter)
@@ -751,12 +850,22 @@
       e.preventDefault();
       fetchBtn.click();
     }
+    
+    // Allow Escape to clear/reset
+    if(e.key === 'Escape') {
+      resetExtractor();
+    }
   });
   
   dlUrlInput.addEventListener('keydown', (e) => {
     if((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
       downloadSiteBtn.click();
+    }
+    
+    // Allow Escape to clear/reset
+    if(e.key === 'Escape') {
+      resetDownloader();
     }
   });
 
