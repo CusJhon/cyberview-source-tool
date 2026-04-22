@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>⚡ CYBER EXTRACTOR ⚡</title>
   
   <!-- ========== ANTI-THIEVING META TAGS ========== -->
@@ -61,8 +61,14 @@
 
     <!-- ========== TAB NAVIGATION SYSTEM ========== -->
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="extractor">📡 HTML EXTRACTOR</button>
-      <button class="tab-btn" data-tab="downloader">📦 DOWNLOAD WEBSITE</button>
+      <button class="tab-btn active" data-tab="extractor">
+        <span class="tab-icon">📡</span>
+        <span class="tab-text">HTML EXTRACTOR</span>
+      </button>
+      <button class="tab-btn" data-tab="downloader">
+        <span class="tab-icon">📦</span>
+        <span class="tab-text">DOWNLOAD WEBSITE</span>
+      </button>
     </div>
 
     <!-- ========== PANEL 1: HTML EXTRACTOR ========== -->
@@ -71,15 +77,15 @@
       <!-- URL Input Section -->
       <div class="input-group">
         <span class="prompt">$></span>
-        <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com" spellcheck="false" autocomplete="off">
+        <input type="text" id="urlInput" placeholder="Enter website URL (e.g., example.com)" spellcheck="false" autocomplete="off">
         <button id="fetchBtn" class="cyber-btn">EXECUTE</button>
       </div>
       
       <!-- Hacker Terminal Log -->
       <div class="hacker-log" id="hackerLog">
-        <div class="log-line"><span class="timestamp">[00:00]</span> > System initialized...</div>
-        <div class="log-line"><span class="timestamp">[00:00]</span> > Security protocols active...</div>
-        <div class="log-line"><span class="timestamp">[00:00]</span> > Awaiting command...</div>
+        <div class="log-line"><span class="timestamp">[--:--:--]</span> > System initialized...</div>
+        <div class="log-line"><span class="timestamp">[--:--:--]</span> > Security protocols active...</div>
+        <div class="log-line"><span class="timestamp">[--:--:--]</span> > Enter URL and press EXECUTE...</div>
       </div>
 
       <!-- Split View: Code Editor + Live Preview -->
@@ -90,14 +96,15 @@
           <div class="code-header">
             <span class="code-lang">📄 HTML_SOURCE</span>
             <div class="code-actions">
-              <button id="copyBtn" class="mini-btn" title="Copy to Clipboard">📋 COPY</button>
-              <button id="downloadHtmlBtn" class="mini-btn" title="Download HTML">⬇ HTML</button>
-              <button id="beautifyBtn" class="mini-btn" title="Beautify Code">✨ BEAUTIFY</button>
-              <button id="minifyBtn" class="mini-btn" title="Minify Code">⚡ MINIFY</button>
+              <button id="copyBtn" class="mini-btn" title="Copy to Clipboard">📋</button>
+              <button id="downloadHtmlBtn" class="mini-btn" title="Download HTML">⬇</button>
+              <button id="beautifyBtn" class="mini-btn" title="Beautify Code">✨</button>
+              <button id="minifyBtn" class="mini-btn" title="Minify Code">⚡</button>
             </div>
           </div>
           <div class="code-container">
-            <pre><code id="htmlCodeViewer" class="language-html">// HTML source will appear here...</code></pre>
+            <pre><code id="htmlCodeViewer" class="language-html">// Enter a URL above and click EXECUTE
+// HTML source will appear here...</code></pre>
           </div>
         </div>
         
@@ -105,7 +112,7 @@
         <div class="split-right">
           <div class="preview-header">
             <span class="preview-title">🌐 LIVE PREVIEW</span>
-            <span class="preview-url" id="previewUrlDisplay"></span>
+            <span class="preview-url" id="previewUrlDisplay">No URL loaded</span>
           </div>
           <iframe id="livePreview" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" title="live preview"></iframe>
         </div>
@@ -121,14 +128,14 @@
       <!-- URL Input for Downloader -->
       <div class="input-group">
         <span class="prompt">$></span>
-        <input type="text" id="dlUrlInput" placeholder="https://example.com" value="https://example.com" spellcheck="false">
-        <button id="downloadSiteBtn" class="cyber-btn">EXTRACT & ZIP</button>
+        <input type="text" id="dlUrlInput" placeholder="Enter website URL to extract assets" spellcheck="false">
+        <button id="downloadSiteBtn" class="cyber-btn">EXTRACT</button>
       </div>
       
       <!-- Downloader Hacker Log -->
       <div class="hacker-log" id="dlHackerLog">
-        <div class="log-line"><span class="timestamp">[00:00]</span> > Ready for extraction...</div>
-        <div class="log-line"><span class="timestamp">[00:00]</span> > Awaiting target URL...</div>
+        <div class="log-line"><span class="timestamp">[--:--:--]</span> > Ready for extraction...</div>
+        <div class="log-line"><span class="timestamp">[--:--:--]</span> > Enter URL and press EXTRACT...</div>
       </div>
       
       <!-- Download Progress Area -->
@@ -144,7 +151,7 @@
     <!-- ========== TERMINAL FOOTER ========== -->
     <div class="terminal-footer">
       <span class="footer-left">[ 0x7F ] ROOT@CYBER-EXTRACTOR:~</span>
-      <span class="footer-right" id="timeDisplay">00:00:00</span>
+      <span class="footer-right" id="timeDisplay">--:--:--</span>
     </div>
   </div>
 

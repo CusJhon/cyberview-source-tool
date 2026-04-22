@@ -1,6 +1,7 @@
 /* ============================================
    SCRIPT.JS - CYBER EXTRACTOR ULTRA
    WITH ANTI-THIEVING SECURITY SYSTEM
+   PLACEHOLDER FIXED - NO DEFAULT URL
    ============================================ */
 
 (function(){
@@ -479,7 +480,15 @@
   // ==========================================
   
   async function fetchAndDisplay(url) {
-    if(!url) return;
+    if(!url) {
+      addLog(hackerLog, '❌ ERROR: Please enter a URL');
+      return;
+    }
+    
+    // Add https:// if no protocol specified
+    if(!url.match(/^https?:\/\//i)) {
+      url = 'https://' + url;
+    }
     
     statusText.innerText = 'CONNECTION: FETCHING...';
     hackerLog.innerHTML = '';
@@ -516,6 +525,7 @@
       statusText.innerText = 'CONNECTION: BLOCKED';
       codeViewer.textContent = `// Failed to fetch: ${err.message}\n// Try using a different URL or check CORS settings`;
       hljs.highlightElement(codeViewer);
+      previewUrlDisplay.innerText = 'Failed to load';
     }
   }
 
@@ -524,14 +534,20 @@
   // ==========================================
   
   fetchBtn.addEventListener('click', () => {
-    const url = urlInput.value.trim() || 'https://example.com';
+    const url = urlInput.value.trim();
     fetchAndDisplay(url);
   });
   
   // Copy button
   copyBtn.addEventListener('click', async () => {
+    const content = codeViewer.textContent;
+    if(!content || content.includes('Enter a URL above')) {
+      addLog(hackerLog, '⚠️ No HTML content to copy');
+      return;
+    }
+    
     try {
-      await navigator.clipboard.writeText(codeViewer.textContent);
+      await navigator.clipboard.writeText(content);
       addLog(hackerLog, '📋 HTML copied to clipboard');
       playBeep('click');
     } catch(err) {
@@ -542,6 +558,11 @@
   // Download HTML button
   downloadHtmlBtn.addEventListener('click', () => {
     const content = codeViewer.textContent;
+    if(!content || content.includes('Enter a URL above')) {
+      addLog(hackerLog, '⚠️ No HTML content to download');
+      return;
+    }
+    
     const blob = new Blob([content], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -555,8 +576,14 @@
   
   // Beautify button
   beautifyBtn.addEventListener('click', () => {
+    const content = codeViewer.textContent;
+    if(!content || content.includes('Enter a URL above')) {
+      addLog(hackerLog, '⚠️ No HTML content to beautify');
+      return;
+    }
+    
     try {
-      let formatted = html_beautify(codeViewer.textContent);
+      let formatted = html_beautify(content);
       codeViewer.textContent = formatted;
       hljs.highlightElement(codeViewer);
       addLog(hackerLog, '✨ Code beautified');
@@ -568,8 +595,14 @@
   
   // Minify button
   minifyBtn.addEventListener('click', () => {
+    const content = codeViewer.textContent;
+    if(!content || content.includes('Enter a URL above')) {
+      addLog(hackerLog, '⚠️ No HTML content to minify');
+      return;
+    }
+    
     try {
-      let minified = codeViewer.textContent
+      let minified = content
         .replace(/\s+/g, ' ')
         .replace(/>\s+</g, '><')
         .trim();
@@ -612,7 +645,17 @@
   // ==========================================
   
   downloadSiteBtn.addEventListener('click', async () => {
-    const baseUrl = dlUrlInput.value.trim() || 'https://example.com';
+    let baseUrl = dlUrlInput.value.trim();
+    
+    if(!baseUrl) {
+      addLog(dlHackerLog, '❌ ERROR: Please enter a URL');
+      return;
+    }
+    
+    // Add https:// if no protocol specified
+    if(!baseUrl.match(/^https?:\/\//i)) {
+      baseUrl = 'https://' + baseUrl;
+    }
     
     dlHackerLog.innerHTML = '';
     fakeHackerSequence(dlHackerLog);
@@ -700,22 +743,6 @@
   });
 
   // ==========================================
-  // INITIAL LOAD
-  // ==========================================
-  
-  window.addEventListener('load', () => {
-    fetchAndDisplay('https://example.com');
-  });
-
-  // ==========================================
-  // ADD SOUND TO ALL BUTTONS
-  // ==========================================
-  
-  document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('click', () => playBeep('click'));
-  });
-
-  // ==========================================
   // KEYBOARD SHORTCUT FOR EXECUTE (Ctrl+Enter)
   // ==========================================
   
@@ -732,5 +759,31 @@
       downloadSiteBtn.click();
     }
   });
+
+  // ==========================================
+  // ADD SOUND TO ALL BUTTONS
+  // ==========================================
+  
+  document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => playBeep('click'));
+  });
+
+  // ==========================================
+  // INITIAL LOG UPDATE
+  // ==========================================
+  
+  // Update initial timestamps
+  setTimeout(() => {
+    const logLines = document.querySelectorAll('.log-line .timestamp');
+    logLines.forEach(span => {
+      if(span.textContent.includes('--:--:--')) {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        span.textContent = `[${hours}:${minutes}:${seconds}]`;
+      }
+    });
+  }, 100);
 
 })();
